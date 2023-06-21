@@ -18,7 +18,16 @@ export class ProductService {
   getProductList(theCategoryId: number): Observable<Product[]>{
 
     const url = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
-    return this.httpClient.get<GetResponseProducts>(url).pipe(
+    return this.getProducts(url);
+  }
+
+  searchProducts(theKeyword: string): Observable<Product[]> {
+    const url = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
+    return this.getProducts(url);
+  }
+
+  getProducts(searchUrl: string): Observable<Product[]>{
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
       map(response => response._embedded.products)
     );
   }
